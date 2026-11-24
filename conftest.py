@@ -5,7 +5,7 @@ from selenium import webdriver
 def driver(request):
     options = webdriver.ChromeOptions()
 
-    # options.add_argument("--headless=new")
+    
 
     chrome = webdriver.Chrome(options=options)
     chrome.maximize_window()

@@ -6,6 +6,7 @@ from pages.base_page import BasePage
 
 
 class AgencyDetailsPage(BasePage):
+
     def __init__(self, driver):
         super().__init__(driver)
 
@@ -14,13 +15,17 @@ class AgencyDetailsPage(BasePage):
         self.agency_email_input = (By.NAME, "agency_email")
         self.agency_website_input = (By.NAME, "agency_website")
         self.agency_address_input = (By.NAME, "agency_address")
-        self.next_button = (By.XPATH, "//button[type='Submit']")
 
-        
+        self.next_button = (
+            By.XPATH,
+            "//button[@type='submit' or normalize-space()='Next']"
+        )
+
         self.region_of_operation_dropdown = (
-            By.XPATH, "//label[normalize-space()='Region of Operation']/following-sibling::button")
+            By.XPATH,
+            "//label[contains(normalize-space(.),'Region of Operation')]/following::button[1]"
+        )
 
-    
     def enter_agency_name(self, agency_name):
         self.type_text(self.agency_name_input, agency_name)
 
@@ -36,32 +41,45 @@ class AgencyDetailsPage(BasePage):
     def enter_agency_address(self, address):
         self.type_text(self.agency_address_input, address)
 
-    def choose_region_of_operation(self, region_name=None):
-    
-        self.select_from_dropdown(self.region_of_operation_dropdown, region_name)
+    def choose_region_of_operation(self, region_name="Nepal"):
+        print("Selecting region:", region_name)
 
-    
+        self.select_from_dropdown(
+            self.region_of_operation_dropdown,
+            region_name
+        )
+
     def get_selected_region_text(self):
-        return self.find(self.region_of_operation_dropdown).text
+        return self.find(
+            self.region_of_operation_dropdown
+        ).text
 
     def is_step_open(self, wait_seconds=5):
-        return super().is_step_open("About your Agency", wait_seconds)
+        return super().is_step_open(
+            "About your Agency",
+            wait_seconds
+        )
 
     def click_next_button(self):
-       self.driver.find_element(*self.next_button).click()
+        self.click(self.next_button)
 
-    
-    def fill_agency_details(self, agency_name=test_data.AGENCY_NAME,
+    def fill_agency_details(
+        self,
+        agency_name=test_data.AGENCY_NAME,
         role=test_data.ROLE_IN_AGENCY,
         email=test_data.AGENCY_EMAIL,
         address=test_data.AGENCY_ADDRESS,
         website=test_data.AGENCY_WEBSITE,
-        region=None):
+        region="Nepal"
+    ):
         self.enter_agency_name(agency_name)
         self.enter_role_in_agency(role)
         self.enter_agency_email(email)
         self.enter_agency_website(website)
         self.enter_agency_address(address)
+
         self.choose_region_of_operation(region)
         self.click_next_button()
+
         return self
+
