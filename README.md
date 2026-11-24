@@ -24,6 +24,8 @@ project/
 - Gmail IMAP for OTP verification
 
 ## Run the Project
+1. clone the repository 
+2. create a .env file at the root of the repo and set environment credentials as per .env.example(you will need a valid email address and your app password for email address)
 
 Install dependencies:
 
