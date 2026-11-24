@@ -35,6 +35,7 @@ Run tests:
 
 ```bash
 pytest -v
+python -m pytest tests/register.py -v
 ```
 
 ## Notes
